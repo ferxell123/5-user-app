@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
   "name": "5-user-app",
+=======
+  "name": "angular-app",
+>>>>>>> 3da6c39 (initial commit)
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -18,7 +22,10 @@
     "@angular/platform-browser": "^17.3.0",
     "@angular/platform-browser-dynamic": "^17.3.0",
     "@angular/router": "^17.3.0",
+<<<<<<< HEAD
     "5-user-app": "file:",
+=======
+>>>>>>> 3da6c39 (initial commit)
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"

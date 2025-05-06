@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # 5UserApp
+=======
+# AngularApp
+>>>>>>> 3da6c39 (initial commit)
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.17.
 
