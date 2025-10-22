@@ -10,7 +10,8 @@
                             <th>Last Name</th>
                             <th>Email</th>
                             <th>Username</th>
-                            <th>Actions</th>
+                            <th>Delete</th>
+                            <th>Update</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -23,6 +24,9 @@
                             <td>
                                 <button type="button" class="btn btn-danger" (click)="onRemoveUser(user.id)">Delete</button>
                             </td>
+                            <td>
+                                <button type="button" class="btn btn-primary" (click)="onSelectedUser(user)">Update</button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -32,4 +36,3 @@
                     <p>No users found.</p>
                 </div>
             </ng-template>
-        

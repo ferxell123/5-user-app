@@ -3,10 +3,11 @@
 
     <div class="row">
         <div class="col">
-            <user-form (newUserEventEmitter)="addUser($event)"></user-form>
+            <user-form (newUserEventEmitter)="addUser($event)" [user]="userSelected"></user-form>
         </div>
         <div class="col">
-            <user [users]="users" (idUserEventEmitter)="removeUser($event)"></user>
+            <user [users]="users" (idUserEventEmitter)="removeUser($event)"
+                (selectedUserEventEmitter)="setSelectedUser($event)"></user>
         </div>
     </div>
 </div>

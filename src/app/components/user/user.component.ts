@@ -7,17 +7,24 @@ import { UserFormComponent } from '../user-form/user-form.component';
   selector: 'user',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './user.component.html'
+  templateUrl: './user.component.html',
 })
 export class UserComponent {
   @Input() users: User[] = [];
 
-  @Output() idUserEventEmitter: EventEmitter<number> = new EventEmitter<number>();
+  @Output() idUserEventEmitter =   new EventEmitter();
+  @Output() selectedUserEventEmitter =  new EventEmitter();
+
+
   onRemoveUser(id: number): void {
     const confirmDelete = confirm('Are you sure you want to delete this user?');
     if (confirmDelete) {
-      this.users = this.users.filter(user => user.id !== id);
+      this.users = this.users.filter((user) => user.id !== id);
       this.idUserEventEmitter.emit(id);
     }
+  }
+
+  onSelectedUser(user: User): void {
+    this.selectedUserEventEmitter.emit(user);
   }
 }
