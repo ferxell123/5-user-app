@@ -6,15 +6,16 @@ import { UserComponent } from './user/user.component';
 import { UserFormComponent } from './user-form/user-form.component';
 import Swal from 'sweetalert2';
 
+
 @Component({
   selector: 'user-app',
   standalone: true,
-  imports: [CommonModule, UserComponent, UserFormComponent],
   templateUrl: './user-app.component.html',
+  imports: [CommonModule, UserComponent, UserFormComponent]
 })
 export class UserAppComponent implements OnInit {
   title: string = 'Listado de Usuarios';
-  users: User[] = []; 
+  users: User[] = [];
   userSelected: User;
   open: boolean = false;
   constructor(
@@ -53,7 +54,7 @@ export class UserAppComponent implements OnInit {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Sí, eliminarlo!"
-    }).then((result) => {
+    }).then((result: any) => {
       if (result.isConfirmed) {
         this.users = this.users.filter((user) => user.id !== id);
         Swal.fire({
