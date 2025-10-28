@@ -3,7 +3,11 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
+<<<<<<< HEAD
     "5-user-app": {
+=======
+    "angular-app": {
+>>>>>>> 3da6c39 (initial commit)
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +17,11 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
+<<<<<<< HEAD
             "outputPath": "dist/5-user-app",
+=======
+            "outputPath": "dist/angular-app",
+>>>>>>> 3da6c39 (initial commit)
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -57,10 +65,17 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
+<<<<<<< HEAD
               "buildTarget": "5-user-app:build:production"
             },
             "development": {
               "buildTarget": "5-user-app:build:development"
+=======
+              "buildTarget": "angular-app:build:production"
+            },
+            "development": {
+              "buildTarget": "angular-app:build:development"
+>>>>>>> 3da6c39 (initial commit)
             }
           },
           "defaultConfiguration": "development"
@@ -68,7 +83,11 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
+<<<<<<< HEAD
             "buildTarget": "5-user-app:build"
+=======
+            "buildTarget": "angular-app:build"
+>>>>>>> 3da6c39 (initial commit)
           }
         },
         "test": {
