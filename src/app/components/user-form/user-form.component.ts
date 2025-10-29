@@ -2,6 +2,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { User } from '../../models/user';
 import { CommonModule } from '@angular/common';
+import { SharingDataService } from '../../services/sharing-data.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'user-form',
@@ -10,13 +12,13 @@ import { CommonModule } from '@angular/common';
   templateUrl: './user-form.component.html'
 })
 export class UserFormComponent {
-@Input () user: User;
-@Output() newUserEventEmitter: EventEmitter<User> = new EventEmitter<User>();
-@Output() openEventEmitter: EventEmitter<void> = new EventEmitter<void>();
+  user: User;
 
-
-constructor() {
-    this.user = new User();
+  constructor(
+    private readonly router: Router,
+    private readonly sharingDataService: SharingDataService
+  ) {
+    this.user = this.router.getCurrentNavigation()?.extras.state?.['user'] || new User();
   }
 
   onSubmit(userForm: NgForm): void {
@@ -24,7 +26,7 @@ constructor() {
       console.log('Form is invalid');
       return;
     }
-    this.newUserEventEmitter.emit(this.user);
+    this.sharingDataService.newUserEventEmitter.emit(this.user);
     userForm.resetForm();
     userForm.resetForm();
     this.user = new User(); // Reset the user object for the next submission
@@ -37,9 +39,6 @@ constructor() {
   clearForm(userForm: NgForm): void {
     userForm.resetForm();
     this.user = new User(); // Reset the user object
-  }
-onOpenClose(): void {
-    this.openEventEmitter.emit();
   }
 
 }
