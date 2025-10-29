@@ -11,6 +11,7 @@ import Swal from 'sweetalert2';
   standalone: true,
   imports: [CommonModule, UserComponent, UserFormComponent],
   templateUrl: './user-app.component.html',
+  styleUrls: ['./user-app.component.css']
 })
 export class UserAppComponent implements OnInit {
   title: string = 'Listado de Usuarios';

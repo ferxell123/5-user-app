@@ -1,138 +1,109 @@
-<form
-  (ngSubmit)="onSubmit(userForm)"
-  #userForm="ngForm"
-  class="form-group"
-  autocomplete="off"
->
-  <!-- Formulario de creación de usuario -->
+<div class="modal" id="userModal" tabindex="-1" style="display: block;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Formulario {{ user.id > 0 ?
+              "Actualizar" : "Crear" }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" 
+        (click)="onOpenClose()"></button>
+      </div>
+      <div class="modal-body">
 
-  <h2>Crear Usuario</h2>
 
-  <!-- Campos del formulario -->
-  <input
-    class="form-control my-2"
-    placeholder="Enter Name"
-    name="name"
-    [(ngModel)]="user.name"
-    required
-    #name="ngModel"
-    autofocus
-    minlength="8"
-    maxlength="20"
-    pattern="[a-zA-ZÀ-ÿ\s]{8,20}"
-    title="Debe contener entre 8 y 20 caracteres, solo letras y espacios"
-  />
-  <div *ngIf="name.invalid && (name.dirty || name.touched)">
-    <div class="alert alert-danger" *ngIf="name.errors!['required']">
-      El campo Nombre es obligatorio.
-    </div>
-    <div class="alert alert-danger" *ngIf="name.errors!['minlength']">
-      El campo Nombre debe tener al menos 8 caracteres.
-    </div>
-    <div class="alert alert-danger" *ngIf="name.errors!['maxlength']">
-      El campo Nombre no puede exceder los 20 caracteres.
-    </div>
-    <div class="alert alert-danger" *ngIf="name.errors!['pattern']">
-      El campo Nombre solo puede contener letras y espacios.
+        <form (ngSubmit)="onSubmit(userForm)" #userForm="ngForm" class="form-group" autocomplete="off">
+          <!-- Formulario de creación de usuario -->
+
+          <h2>Crear Usuario</h2>
+
+          <!-- Campos del formulario -->
+          <input class="form-control my-2" placeholder="Enter Name" name="name" [(ngModel)]="user.name" required
+            #name="ngModel" autofocus minlength="8" maxlength="20" pattern="[a-zA-ZÀ-ÿ\s]{8,20}"
+            title="Debe contener entre 8 y 20 caracteres, solo letras y espacios" />
+          <div *ngIf="name.invalid && (name.dirty || name.touched)">
+            <div class="alert alert-danger" *ngIf="name.errors!['required']">
+              El campo Nombre es obligatorio.
+            </div>
+            <div class="alert alert-danger" *ngIf="name.errors!['minlength']">
+              El campo Nombre debe tener al menos 8 caracteres.
+            </div>
+            <div class="alert alert-danger" *ngIf="name.errors!['maxlength']">
+              El campo Nombre no puede exceder los 20 caracteres.
+            </div>
+            <div class="alert alert-danger" *ngIf="name.errors!['pattern']">
+              El campo Nombre solo puede contener letras y espacios.
+            </div>
+          </div>
+
+          <input class="form-control my-2" placeholder="Enter LastName" name="lastName" [(ngModel)]="user.lastName"
+            required #lastName="ngModel" pattern="[a-zA-ZÀ-ÿ\s]{8,20}" minlength="2" maxlength="20" />
+          <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)">
+            <div class="alert alert-danger" *ngIf="lastName.errors!['required']">
+              El campo Apellido es obligatorio.
+            </div>
+            <div class="alert alert-danger" *ngIf="lastName.errors!['minlength']">
+              El campo Apellido debe tener al menos 8 caracteres.
+            </div>
+            <div class="alert alert-danger" *ngIf="lastName.errors!['maxlength']">
+              El campo Apellido no puede exceder los 20 caracteres.
+            </div>
+            <div class="alert alert-danger" *ngIf="lastName.errors!['pattern']">
+              El campo Apellido solo puede contener letras y espacios.
+            </div>
+          </div>
+
+          <input class="form-control my-2" placeholder="Enter Email" name="email" [(ngModel)]="user.email" required
+            type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Debe ser un correo electrónico válido"
+            #email="ngModel" />
+          <div *ngIf="email.invalid && (email.dirty || email.touched)">
+            <div class="alert alert-danger" *ngIf="email.errors!['required']">
+              El campo Email es obligatorio.
+            </div>
+            <div class="alert alert-danger" *ngIf="email.errors!['pattern']">
+              El formato del correo electrónico no es válido.
+            </div>
+          </div>
+          <input class="form-control my-2" placeholder="Enter Address" name="address" [(ngModel)]="user.username"
+            required #address="ngModel" pattern="[a-zA-ZÀ-ÿ0-9\s,.\-]{10,50}"
+            title="Debe contener entre 10 y 50 caracteres, letras, números, espacios y algunos caracteres especiales como , . -" />
+          <div *ngIf="address.invalid && (address.dirty || address.touched)">
+            <div class="alert alert-danger" *ngIf="address.errors!['required']">
+              El campo Dirección es obligatorio.
+            </div>
+
+            <div class="alert alert-danger" *ngIf="address.errors!['pattern']">
+              Debe contener entre 10 y 50 caracteres, letras, números, espacios y
+              algunos caracteres especiales como , . -
+            </div>
+          </div>
+
+          <input type="password" class="form-control" placeholder="Enter Password" name="password"
+            [(ngModel)]="user.password" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"
+            title="Debe contener al menos 8 caracteres, una mayúscula, una minúscula y un número" #password="ngModel" />
+          <div *ngIf="password.invalid && (password.dirty || password.touched)">
+            <div class="alert alert-danger" *ngIf="password.errors!['required']">
+              El campo Contraseña es obligatorio.
+            </div>
+            <div class="alert alert-danger" *ngIf="password.errors!['pattern']">
+              La contraseña debe contener al menos 8 caracteres, una mayúscula, una
+              minúscula y un número.
+            </div>
+            <div class="alert alert-danger" *ngIf="password.errors!['minlength']">
+              La contraseña debe tener al menos 8 caracteres.
+            </div>
+          </div>
+          <div>
+            <button type="submit" class="btn btn-primary my-2" [disabled]="userForm.invalid"> {{ user.id > 0 ?
+              "Actualizar" : "Crear" }}
+            </button>
+            <button type="button" class="btn btn-secondary my-2" (click)="userForm.reset()">Reset</button>
+          </div>
+        </form>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="onOpenClose()">Close</button>
+        
+      </div>
     </div>
   </div>
-
-  <input
-    class="form-control my-2"
-    placeholder="Enter LastName"
-    name="lastName"
-    [(ngModel)]="user.lastName"
-    required
-    #lastName="ngModel"
-    pattern="[a-zA-ZÀ-ÿ\s]{8,20}"
-    minlength="2"
-    maxlength="20"
-  />
-  <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)">
-    <div class="alert alert-danger" *ngIf="lastName.errors!['required']">
-      El campo Apellido es obligatorio.
-    </div>
-    <div class="alert alert-danger" *ngIf="lastName.errors!['minlength']">
-      El campo Apellido debe tener al menos 8 caracteres.
-    </div>
-    <div class="alert alert-danger" *ngIf="lastName.errors!['maxlength']">
-      El campo Apellido no puede exceder los 20 caracteres.
-    </div>
-    <div class="alert alert-danger" *ngIf="lastName.errors!['pattern']">
-      El campo Apellido solo puede contener letras y espacios.
-    </div>
-  </div>
-
-  <input
-    class="form-control my-2"
-    placeholder="Enter Email"
-    name="email"
-    [(ngModel)]="user.email"
-    required
-    type="email"
-    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
-    title="Debe ser un correo electrónico válido"
-    #email="ngModel"
-  />
-  <div *ngIf="email.invalid && (email.dirty || email.touched)">
-    <div class="alert alert-danger" *ngIf="email.errors!['required']">
-      El campo Email es obligatorio.
-    </div>
-    <div class="alert alert-danger" *ngIf="email.errors!['pattern']">
-      El formato del correo electrónico no es válido.
-    </div>
-  </div>
-  <input
-    class="form-control my-2"
-    placeholder="Enter Address"
-    name="address"
-    [(ngModel)]="user.username"
-    required
-    #address="ngModel"
-    pattern="[a-zA-ZÀ-ÿ0-9\s,.\-]{10,50}"
-    title="Debe contener entre 10 y 50 caracteres, letras, números, espacios y algunos caracteres especiales como , . -"
-  />
-  <div *ngIf="address.invalid && (address.dirty || address.touched)">
-    <div class="alert alert-danger" *ngIf="address.errors!['required']">
-      El campo Dirección es obligatorio.
-    </div>
-
-    <div class="alert alert-danger" *ngIf="address.errors!['pattern']">
-      Debe contener entre 10 y 50 caracteres, letras, números, espacios y
-      algunos caracteres especiales como , . -
-    </div>
-  </div>
-
-  <input
-    type="password"
-    class="form-control"
-    placeholder="Enter Password"
-    name="password"
-    [(ngModel)]="user.password"
-    required
-    pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"
-    title="Debe contener al menos 8 caracteres, una mayúscula, una minúscula y un número"
-    #password="ngModel"
-  />
-  <div *ngIf="password.invalid && (password.dirty || password.touched)">
-    <div class="alert alert-danger" *ngIf="password.errors!['required']">
-      El campo Contraseña es obligatorio.
-    </div>
-    <div class="alert alert-danger" *ngIf="password.errors!['pattern']">
-      La contraseña debe contener al menos 8 caracteres, una mayúscula, una
-      minúscula y un número.
-    </div>
-    <div class="alert alert-danger" *ngIf="password.errors!['minlength']">
-      La contraseña debe tener al menos 8 caracteres.
-    </div>
-  </div>
-  <div>
-    <button
-      type="submit"
-      class="btn btn-primary my-2"
-      [disabled]="userForm.invalid"
-    > {{ user.id > 0 ? "Actualizar" : "Crear" }}
-    </button>
-    <button type="button" class="btn btn-secondary my-2" (click)="userForm.reset()">Reset</button>
-  </div>
-</form>
+</div>

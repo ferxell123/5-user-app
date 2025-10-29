@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
 export class UserFormComponent {
 @Input () user: User;
 @Output() newUserEventEmitter: EventEmitter<User> = new EventEmitter<User>();
+@Output() openEventEmitter: EventEmitter<void> = new EventEmitter<void>();
 
 
 constructor() {
@@ -37,6 +38,8 @@ constructor() {
     userForm.resetForm();
     this.user = new User(); // Reset the user object
   }
-
+onOpenClose(): void {
+    this.openEventEmitter.emit();
+  }
 
 }
