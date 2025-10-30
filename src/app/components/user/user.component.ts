@@ -20,6 +20,7 @@ export class UserComponent {
     private readonly router: Router,
     private readonly sharingDataService: SharingDataService
   ) {
+    
     this.users= this.router.getCurrentNavigation()?.extras.state?.['users'] || [];
   }
 
