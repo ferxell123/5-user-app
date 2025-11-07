@@ -32,7 +32,7 @@
             </div>
           </div>
 
-          <input class="form-control my-2" placeholder="Enter LastName" name="lastName" [(ngModel)]="user.lastName"
+          <input class="form-control my-2" placeholder="Enter LastName" name="lastName" [(ngModel)]="user.lastname"
             required #lastName="ngModel" pattern="[a-zA-ZÀ-ÿ\s]{8,20}" minlength="2" maxlength="20" />
           <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)">
             <div class="alert alert-danger" *ngIf="lastName.errors!['required']">
