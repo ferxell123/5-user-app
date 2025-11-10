@@ -61,29 +61,28 @@
             </div>
           </div>
           <input class="form-control my-2" placeholder="Enter Address" name="address" [(ngModel)]="user.username"
-            required #address="ngModel" pattern="[a-zA-ZÀ-ÿ0-9\s,.\-]{10,50}"
-            title="Debe contener entre 10 y 50 caracteres, letras, números, espacios y algunos caracteres especiales como , . -" />
+            required #address="ngModel" pattern ="^(?!.* {2})[a-zA-Z0-9]+(?: [a-zA-Z0-9]+){1,50}$"
+          >
+                        
           <div *ngIf="address.invalid && (address.dirty || address.touched)">
             <div class="alert alert-danger" *ngIf="address.errors!['required']">
               El campo Dirección es obligatorio.
             </div>
 
             <div class="alert alert-danger" *ngIf="address.errors!['pattern']">
-              Debe contener entre 10 y 50 caracteres, letras, números, espacios y
-              algunos caracteres especiales como , . -
+              La dirección no es válida. Evite caracteres especiales y múltiples espacios.
             </div>
           </div>
 
           <input type="password" class="form-control" placeholder="Enter Password" name="password"
-            [(ngModel)]="user.password" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"
-            title="Debe contener al menos 8 caracteres, una mayúscula, una minúscula y un número" #password="ngModel" />
+            [(ngModel)]="user.password" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[.,@$!%*#?&-_])[a-zA-Z\d.,@$!%*#?&-_]{8,}$"
+             #password="ngModel" />
           <div *ngIf="password.invalid && (password.dirty || password.touched)">
             <div class="alert alert-danger" *ngIf="password.errors!['required']">
               El campo Contraseña es obligatorio.
             </div>
             <div class="alert alert-danger" *ngIf="password.errors!['pattern']">
-              La contraseña debe contener al menos 8 caracteres, una mayúscula, una
-              minúscula y un número.
+              {{ SPECIAL_CHAR_MESSAGE }}
             </div>
             <div class="alert alert-danger" *ngIf="password.errors!['minlength']">
               La contraseña debe tener al menos 8 caracteres.

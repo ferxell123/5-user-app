@@ -15,13 +15,13 @@ import { SharingDataService } from '../services/sharing-data.service';
 })
 export class UserAppComponent implements OnInit {
   users: User[] = [];
-  
+
   constructor(
     private readonly service: UserService,
     private readonly sharingDataService: SharingDataService,
     private readonly router: Router
   ) {
-    
+
 
   }
 
@@ -34,7 +34,7 @@ export class UserAppComponent implements OnInit {
     this.findUserById();
   }
 
-  findUserById(){
+  findUserById() {
     this.sharingDataService.findUserByIdEventEmitter.subscribe((id: number) => {
       const user = this.users.find((u) => u.id === id);
       this.sharingDataService.selectUserEventEmitter.emit(user);
@@ -44,11 +44,15 @@ export class UserAppComponent implements OnInit {
   addUser(): void {
     this.sharingDataService.newUserEventEmitter.subscribe((user: User) => {
       if (user.id > 0) {
-        this.users = this.users.map((u) => (u.id === user.id ? { ...user } : u));
+        this.service.update(user).subscribe(updatedUser => {
+          this.users = this.users.map((u) => (u.id === updatedUser.id ? updatedUser : u));
+        });
       } else {
-        this.users = [...this.users, { ...user, id: Date.now() }];
+        this.service.create(user).subscribe(createdUser => {
+          this.users = [...this.users, { ...createdUser }];
+        });
       }
-      this.router.navigate(['/users'], { state: { users: this.users } });
+      this.router.navigate(['/users']);
       Swal.fire({
         title: "Guardado!",
         text: "Usuario guardado correctamente!",
@@ -69,14 +73,16 @@ export class UserAppComponent implements OnInit {
         confirmButtonText: "Sí, eliminarlo!"
       }).then((result) => {
         if (result.isConfirmed) {
-          this.users = this.users.filter((user) => user.id !== id);
-          this.router.navigate(['/users/create'], { skipLocationChange: true }).then(() => {
-            this.router.navigate(['/users'], { state: { users: this.users } });
-          });
-          Swal.fire({
-            title: "Eliminado!",
-            text: "Usuario eliminado correctamente!",
-            icon: "success"
+          this.service.delete(id).subscribe(() => {
+            this.users = this.users.filter((user) => user.id !== id);
+            this.router.navigate(['/users/create'], { skipLocationChange: true }).then(() => {
+              this.router.navigate(['/users']);
+            });
+            Swal.fire({
+              title: "Eliminado!",
+              text: "Usuario eliminado correctamente!",
+              icon: "success"
+            });
           });
         }
       });
