@@ -49,17 +49,8 @@ export class UserFormComponent implements OnInit {
   }
 
   onSubmit(userForm: NgForm): void {
-    if (userForm.invalid) {
-      console.log('Form is invalid');
-      return;
-    }
     this.sharingDataService.newUserEventEmitter.emit(this.user);
-    userForm.resetForm();
-    this.user = new User(); // Reset the user object for the next submission
-
-
     console.log('User submitted:', this.user);
-    // Here you can handle the form submission, e.g., send the user data to a server
   }
 
   clearForm(userForm: NgForm): void {
