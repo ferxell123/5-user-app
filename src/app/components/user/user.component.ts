@@ -12,7 +12,7 @@ import { UserService } from '../../services/user.service';
   imports: [CommonModule, RouterModule],
   templateUrl: './user.component.html',
 })
-export class UserComponent implements OnInit{
+export class UserComponent implements OnInit {
 
 
   title: string = 'Listado de Usuarios';
@@ -22,10 +22,15 @@ export class UserComponent implements OnInit{
     private readonly router: Router,
     private readonly sharingDataService: SharingDataService
   ) {
+    if (this.router.getCurrentNavigation()?.extras.state) {
+      this.users = this.router.getCurrentNavigation()?.extras.state!['users'];
+    }
   }
   ngOnInit(): void {
-    console.log('Consulta de usuarios findAll');
+    if (this.users?.length === 0) {
+      console.log('Consulta de usuarios findAll');
       this.userService.findAll().subscribe(users => this.users = users);
+    }
   }
 
   onRemoveUser(id: number): void {

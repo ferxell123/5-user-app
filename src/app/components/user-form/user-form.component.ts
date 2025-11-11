@@ -14,8 +14,9 @@ import { UserService } from '../../services/user.service';
 })
 export class UserFormComponent implements OnInit {
   user: User;
-  
-  
+  errors: any = {};
+
+
   SPECIAL_CHAR_MESSAGE = 'La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial como . , @ $ ! % * # ? & - _';
   // Patrón de ejemplo (permite letras, números, espacios, '.', ',', '#', '-')
 
@@ -25,22 +26,25 @@ export class UserFormComponent implements OnInit {
     private readonly userService: UserService
   ) {
     this.user = new User();
-    
+
   }
   ngOnInit(): void {
+    this.sharingDataService.errorEventEmitter.subscribe((errors: any) => {
+      this.errors = errors;
+    });
     // *** Alternative event emitter subscription
-      // this.sharingDataService.selectUserEventEmitter.subscribe((user: User) => { this.user = user; });
+    // this.sharingDataService.selectUserEventEmitter.subscribe((user: User) => { this.user = user; });
     this.route.paramMap.subscribe(params => {
       const id = +(params.get('id') || '0');
       if (id > 0) {
 
         // *** Alternative direct assignment
-          //this.userService.findById(id).subscribe(user => this.user = user) 
+        //this.userService.findById(id).subscribe(user => this.user = user) 
 
         // *** Alternatively, using RxJS
-        this.userService.findById(id).subscribe(user => {  this.user = user; });
+        this.userService.findById(id).subscribe(user => { this.user = user; });
       }
-     
+
     });
   }
 

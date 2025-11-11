@@ -14,9 +14,10 @@
           <h2>Crear Usuario</h2>
 
           <!-- Campos del formulario -->
-          <input class="form-control my-2" placeholder="Enter Name" name="name" [(ngModel)]="user.name" required
+          <input class="form-control my-2" placeholder="Enter Name" name="name" [(ngModel)]="user.name" 
             #name="ngModel" autofocus minlength="8" maxlength="20" pattern="[a-zA-ZÀ-ÿ\s]{8,20}"
             title="Debe contener entre 8 y 20 caracteres, solo letras y espacios" />
+
           <div *ngIf="name.invalid && (name.dirty || name.touched)">
             <div class="alert alert-danger" *ngIf="name.errors!['required']">
               El campo Nombre es obligatorio.
@@ -33,7 +34,7 @@
           </div>
 
           <input class="form-control my-2" placeholder="Enter LastName" name="lastName" [(ngModel)]="user.lastname"
-            required #lastName="ngModel" pattern="[a-zA-ZÀ-ÿ\s]{8,20}" minlength="2" maxlength="20" />
+             #lastName="ngModel" pattern="[a-zA-ZÀ-ÿ\s]{8,20}" />
           <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)">
             <div class="alert alert-danger" *ngIf="lastName.errors!['required']">
               El campo Apellido es obligatorio.
@@ -49,9 +50,9 @@
             </div>
           </div>
 
-          <input class="form-control my-2" placeholder="Enter Email" name="email" [(ngModel)]="user.email" required
-            type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Debe ser un correo electrónico válido"
-            #email="ngModel" />
+          <input class="form-control my-2" placeholder="Enter Email" name="email" [(ngModel)]="user.email" 
+            type="email"  title="Debe ser un correo electrónico válido"
+            #email="ngModel" /> <!-- pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" --> 
           <div *ngIf="email.invalid && (email.dirty || email.touched)">
             <div class="alert alert-danger" *ngIf="email.errors!['required']">
               El campo Email es obligatorio.

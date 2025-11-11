@@ -20,10 +20,7 @@ export class UserAppComponent implements OnInit {
     private readonly service: UserService,
     private readonly sharingDataService: SharingDataService,
     private readonly router: Router
-  ) {
-
-
-  }
+  ) { }
 
   ngOnInit(): void {
     this.service.findAll().subscribe((users: User[]) => {
@@ -44,15 +41,26 @@ export class UserAppComponent implements OnInit {
   addUser(): void {
     this.sharingDataService.newUserEventEmitter.subscribe((user: User) => {
       if (user.id > 0) {
-        this.service.update(user).subscribe(updatedUser => {
-          this.users = this.users.map((u) => (u.id === updatedUser.id ? updatedUser : u));
+        this.service.update(user).subscribe({
+          next: (updatedUser) => {
+            this.users = this.users.map((u) => (u.id === updatedUser.id ? updatedUser : u));
+            this.router.navigate(['/users'], { state: { users: this.users } });
+          },
+          error: (err) => {
+            this.sharingDataService.errorEventEmitter.emit(err.error);
+          }
         });
       } else {
-        this.service.create(user).subscribe(createdUser => {
-          this.users = [...this.users, { ...createdUser }];
+        this.service.create(user).subscribe({
+          next: createdUser => {
+            this.users = [...this.users, { ...createdUser }];
+            this.router.navigate(['/users'], { state: { users: this.users } });
+          },
+          error: (err) => {
+            this.sharingDataService.errorEventEmitter.emit(err.error);
+          }
         });
       }
-      this.router.navigate(['/users']);
       Swal.fire({
         title: "Guardado!",
         text: "Usuario guardado correctamente!",
@@ -76,7 +84,7 @@ export class UserAppComponent implements OnInit {
           this.service.delete(id).subscribe(() => {
             this.users = this.users.filter((user) => user.id !== id);
             this.router.navigate(['/users/create'], { skipLocationChange: true }).then(() => {
-              this.router.navigate(['/users']);
+              this.router.navigate(['/users'], { state: { users: this.users } });
             });
             Swal.fire({
               title: "Eliminado!",

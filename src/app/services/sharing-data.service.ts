@@ -5,10 +5,11 @@ import { User } from '../models/user';
   providedIn: 'root'
 })
 export class SharingDataService {
-  private _newUserEventEmitter: EventEmitter<User> = new EventEmitter<User>();
-  private _idUserEventEmitter = new EventEmitter();
-  private _findUserByIdEventEmitter = new EventEmitter<number>();
-  private _selectUserEventEmitter = new EventEmitter<User>();
+  private readonly _newUserEventEmitter: EventEmitter<User> = new EventEmitter<User>();
+  private readonly _idUserEventEmitter = new EventEmitter();
+  private readonly _findUserByIdEventEmitter = new EventEmitter<number>();
+  private readonly _selectUserEventEmitter = new EventEmitter<User>();
+  private readonly _errorEventEmitter = new EventEmitter<any>();
   constructor() { }
 
   get newUserEventEmitter(): EventEmitter<User> {
@@ -22,5 +23,8 @@ export class SharingDataService {
   }
   get selectUserEventEmitter(): EventEmitter<User> {
     return this._selectUserEventEmitter;
+  }
+  get errorEventEmitter(): EventEmitter<any> {
+    return this._errorEventEmitter;
   }
 }
