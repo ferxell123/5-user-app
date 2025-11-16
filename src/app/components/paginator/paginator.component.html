@@ -1,0 +1,23 @@
+@if (paginator.metadata?.totalPages>1) {
+<ul class="pagination">
+    <li class="page-item">
+        <a class="page-link" [class.disabled]="paginator.metadata.page === 0"
+            [routerLink]="paginator.metadata.page === 0 ? null : [url,0]">first</a>
+    </li>
+
+    <li class="page-item " [class.disabled]="paginator.metadata.page === 0">
+        <a class="page-link" [routerLink]="[url,paginator.metadata?.page-1]">back</a>
+    </li>
+
+    <li class="page-item ">
+        <a class="page-link">Page {{paginator.metadata?.page+1}} of {{paginator.metadata?.totalPages}}</a>
+    </li>
+    <li class="page-item {{paginator.metadata?.page < paginator.metadata?.totalPages-1? '':'disabled'}}">
+        <a class="page-link" [routerLink]="[url,paginator.metadata ?.page+1]">next</a>
+    </li>
+
+    <li class="page-item  {{paginator.metadata?.last? 'disabled':''}}">
+        <a class="page-link" [routerLink]="[url,paginator.metadata.totalPages-1]">last</a>
+    </li>
+</ul>
+}
