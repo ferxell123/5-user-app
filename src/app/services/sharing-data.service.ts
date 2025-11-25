@@ -11,8 +11,13 @@ export class SharingDataService {
   private readonly _selectUserEventEmitter = new EventEmitter<User>();
   private readonly _errorEventEmitter = new EventEmitter<any>();
   private readonly _pageUsersEventEmitter = new EventEmitter<number>();
-  constructor() { }
+  private readonly _handlerLoginEventEmitter= new EventEmitter();
 
+  constructor() { }
+  
+  get handlerLoginEventEmitter(){
+    return this._handlerLoginEventEmitter;
+  }
   get newUserEventEmitter(): EventEmitter<User> {
     return this._newUserEventEmitter;
   }
