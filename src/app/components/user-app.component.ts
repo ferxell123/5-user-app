@@ -36,20 +36,29 @@ export class UserAppComponent implements OnInit {
     this.handlerLogin();
   }
 
-  handlerLogin(){
-    this.sharingDataService.handlerLoginEventEmitter.subscribe(({username,password}) => {
-      console.log(username+' '+password );
-      this.authService.loginUser({username,password}).subscribe({
-        next: response =>{
-          console.log(response+': '+response);
-          const token =response.token;
-          const payload = JSON.parse(atob(token.split(".")[1]));
-          console.log(payload);
+  handlerLogin() {
+    this.sharingDataService.handlerLoginEventEmitter.subscribe(({ username, password }) => {
+      console.log(username + ' ' + password);
+      this.authService.loginUser({ username, password }).subscribe({
+        next: response => {
+          console.log(response + ': ' + response);
+          const token = response.token;
+          const payload = this.authService.getPayload(token);
+
+          const user = { username: payload.sub };
+          const login = {
+            user,
+            isAuth: true,
+            isAdmin: payload.isAdmin
+          }
+          this.authService.token = token;
+          this.authService.user = login;
+          this.router.navigate(['/users/page/0'])
 
         },
         error: error => {
-          if (error.status=="401") {
-            Swal.fire('Error en el loging',error.error.message,'error');
+          if (error.status == "401") {
+            Swal.fire('Error en el loging', error.error.message, 'error');
           } else {
             throw error;
           }
@@ -79,10 +88,12 @@ export class UserAppComponent implements OnInit {
         this.service.update(user).subscribe({
           next: (updatedUser) => {
             this.users = this.users.map((u) => (u.id === updatedUser.id ? updatedUser : u));
-            this.router.navigate(['/users'], { state: { 
-              users: this.users,
-              paginator: this.paginator
-             } });
+            this.router.navigate(['/users'], {
+              state: {
+                users: this.users,
+                paginator: this.paginator
+              }
+            });
             Swal.fire({
               title: "Actualizado!",
               text: "Usuario actualizado correctamente!",
@@ -100,10 +111,12 @@ export class UserAppComponent implements OnInit {
         this.service.create(user).subscribe({
           next: createdUser => {
             this.users = [...this.users, { ...createdUser }];
-            this.router.navigate(['/users'], { state: { 
-              users: this.users,
-              paginator: this.paginator
-             } });
+            this.router.navigate(['/users'], {
+              state: {
+                users: this.users,
+                paginator: this.paginator
+              }
+            });
             Swal.fire({
               title: "Creado!",
               text: "Usuario creado correctamente!",
@@ -136,10 +149,12 @@ export class UserAppComponent implements OnInit {
           this.service.delete(id).subscribe(() => {
             this.users = this.users.filter((user) => user.id !== id);
             this.router.navigate(['/users/create'], { skipLocationChange: true }).then(() => {
-              this.router.navigate(['/users'], { state: { 
-                users: this.users,
-                paginator: this.paginator
-               } });
+              this.router.navigate(['/users'], {
+                state: {
+                  users: this.users,
+                  paginator: this.paginator
+                }
+              });
             });
             Swal.fire({
               title: "Eliminado!",

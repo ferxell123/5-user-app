@@ -46,20 +46,23 @@
         </div>
         }
 
-        <input type="password" class="form-control" placeholder="Enter Password" name="password"
+        @if (user.id==0) {
+
+          <input type="password" class="form-control" placeholder="Enter Password" name="password"
           [(ngModel)]="user.password"
           pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[.,@$!%*#?&-_])[a-zA-Z\d.,@$!%*#?&-_]{8,}$"
           #password="ngModel" />
-        @if (errors?.password) {
-        <div class="alert alert-danger">
-          {{ errors.password }}
-        </div>
-        }
-        <div *ngIf="password.invalid && (password.dirty || password.touched)">
-          <div class="alert alert-danger" *ngIf="password.errors!['pattern']">
-            {{ SPECIAL_CHAR_MESSAGE }}
+          @if (errors?.password) {
+            <div class="alert alert-danger">
+              {{ errors.password }}
+            </div>
+          }
+          <div *ngIf="password.invalid && (password.dirty || password.touched)">
+            <div class="alert alert-danger" *ngIf="password.errors!['pattern']">
+              {{ SPECIAL_CHAR_MESSAGE }}
+            </div>
           </div>
-        </div>
+        }
 
         <div>
           <button type="submit" class="btn btn-primary my-2"> {{ user.id > 0 ?

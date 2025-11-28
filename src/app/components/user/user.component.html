@@ -1,8 +1,9 @@
 <h3>{{title}}</h3>
-
-<button class="btn btn-primary my-4" [routerLink]="['/users/create']">
-    Crear Usuario
-</button>
+@if (admin){
+    <button class="btn btn-primary my-4" [routerLink]="['/users/create']">
+        Crear Usuario
+    </button>
+}
 
 
 <div *ngIf="users && users.length > 0; else noUsers">
@@ -17,8 +18,10 @@
                 <th>Last Name</th>
                 <th>Email</th>
                 <th>Username</th>
-                <th>Delete</th>
-                <th>Update</th>
+                @if (admin) {
+                    <th>Delete</th>
+                    <th>Update</th>
+                }
             </tr>
         </thead>
         <tbody>
@@ -28,12 +31,15 @@
                 <td>{{user.lastname}}</td>
                 <td>{{user.email}}</td>
                 <td>{{user.username}}</td>
-                <td>
-                    <button type="button" class="btn btn-danger" (click)="onRemoveUser(user.id)">Delete</button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-primary" [routerLink]="['/users/edit', user.id]">Update</button>
-                </td>
+                @if (admin){
+                    <td>
+                        <button type="button" class="btn btn-danger" (click)="onRemoveUser(user.id)">Delete</button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-primary"
+                        [routerLink]="['/users/edit', user.id]">Update</button>
+                    </td>
+                }
             </tr>
         </tbody>
     </table>

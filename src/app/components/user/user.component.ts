@@ -5,6 +5,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { SharingDataService } from '../../services/sharing-data.service';
 import { UserService } from '../../services/user.service';
 import { PaginatorComponent } from '../paginator/paginator.component';
+import { AuthService } from '../../services/auth.service';
 
 
 @Component({
@@ -18,12 +19,13 @@ export class UserComponent implements OnInit {
 
 
   users: User[] = [];
-  paginator: any={};
+  paginator: any = {};
   constructor(
     private readonly userService: UserService,
     private readonly router: Router,
     private readonly sharingDataService: SharingDataService,
     private route: ActivatedRoute,
+    private readonly authService: AuthService
   ) {
     if (this.router.getCurrentNavigation()?.extras.state) {
       this.users = this.router.getCurrentNavigation()?.extras.state!['users'];
@@ -36,13 +38,12 @@ export class UserComponent implements OnInit {
       //this.userService.findAll().subscribe(users => this.users = users);
       this.route.paramMap.subscribe(params => {
         const page = +(params.get('page') || '0');
-        this.userService.findAllPageable(page).subscribe(pageable => 
-          {
-            this.users = pageable.content as User[]
-            this.paginator = pageable;
-            this.sharingDataService.pageUsersEventEmitter.emit({users: this.users, paginator: this.paginator});
+        this.userService.findAllPageable(page).subscribe(pageable => {
+          this.users = pageable.content as User[]
+          this.paginator = pageable;
+          this.sharingDataService.pageUsersEventEmitter.emit({ users: this.users, paginator: this.paginator });
 
-          });
+        });
       });
     }
   }
@@ -53,5 +54,9 @@ export class UserComponent implements OnInit {
 
   onSelectedUser(user: User): void {
     this.router.navigate(['/users/edit', user.id]);
+  }
+
+  get admin() {
+    return this.authService.isAdmin();
   }
 }
