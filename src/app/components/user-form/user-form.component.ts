@@ -1,61 +1,64 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { User } from '../../models/user';
 import { CommonModule } from '@angular/common';
-import { SharingDataService } from '../../services/sharing-data.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UserService } from '../../services/user.service';
+import { Store } from '@ngrx/store';
+import {
+  add,
+  find,
+  resetUser,
+  setUserForm,
+  update,
+} from '../store/users.actions';
 
 @Component({
   selector: 'user-form',
   standalone: true,
   imports: [FormsModule, CommonModule],
-  templateUrl: './user-form.component.html'
+  templateUrl: './user-form.component.html',
 })
 export class UserFormComponent implements OnInit {
   user: User;
   errors: any = {};
 
-
-  SPECIAL_CHAR_MESSAGE = 'La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial como . , @ $ ! % * # ? & - _';
+  SPECIAL_CHAR_MESSAGE =
+    'La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial como . , @ $ ! % * # ? & - _';
   // Patrón de ejemplo (permite letras, números, espacios, '.', ',', '#', '-')
 
   constructor(
-    private readonly route: ActivatedRoute,
-    private readonly sharingDataService: SharingDataService,
-    private readonly userService: UserService
+    private store: Store<{ users: any }>,
+    private readonly route: ActivatedRoute
   ) {
     this.user = new User();
-
+    this.store.select('users').subscribe((state) => {
+      this.errors = state.errors;
+      this.user = { ...state.user };
+    });
   }
   ngOnInit(): void {
-    this.sharingDataService.errorEventEmitter.subscribe((errors: any) => {
-      this.errors = errors;
-    });
-    // *** Alternative event emitter subscription
-    // this.sharingDataService.selectUserEventEmitter.subscribe((user: User) => { this.user = user; });
-    this.route.paramMap.subscribe(params => {
+    this.store.dispatch(resetUser());
+    this.route.paramMap.subscribe((params) => {
       const id = +(params.get('id') || '0');
       if (id > 0) {
-
-        // *** Alternative direct assignment
-        //this.userService.findById(id).subscribe(user => this.user = user) 
-
-        // *** Alternatively, using RxJS
-        this.userService.findById(id).subscribe(user => { this.user = user; });
+        this.store.dispatch(find({ id }));
       }
-
     });
   }
 
   onSubmit(userForm: NgForm): void {
-    this.sharingDataService.newUserEventEmitter.emit(this.user);
-    console.log('User submitted:', this.user);
+    this.store.dispatch(setUserForm({ user: this.user }));
+    if (this.user.id && this.user.id > 0) {
+      this.store.dispatch(update({ updatedUser: this.user }));
+    } else {
+      this.store.dispatch(add({ userNew: this.user }));
+    }
+    this.store.dispatch(resetUser());
   }
 
-  clearForm(userForm: NgForm): void {
+  onClear(userForm: NgForm): void {
+    this.store.dispatch(resetUser());
+    userForm.reset();
     userForm.resetForm();
-    this.user = new User(); // Reset the user object
   }
-
 }

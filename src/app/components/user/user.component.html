@@ -1,15 +1,16 @@
-<h3>{{title}}</h3>
+<h3>{{ title }}</h3>
 @if (admin){
-    <button class="btn btn-primary my-4" [routerLink]="['/users/create']">
-        Crear Usuario
-    </button>
+<button class="btn btn-primary my-4" [routerLink]="['/users/create']">
+    Crear Usuario
+</button>
 }
-
 
 <div *ngIf="users && users.length > 0; else noUsers">
     <p>Users loaded successfully!</p>
     <table class="table table-hover table-striped">
-        <caption class="sr-only">List of Users</caption>
+        <caption class="sr-only">
+            List of Users
+        </caption>
 
         <thead>
             <tr>
@@ -19,26 +20,29 @@
                 <th>Email</th>
                 <th>Username</th>
                 @if (admin) {
-                    <th>Delete</th>
-                    <th>Update</th>
+                <th>Delete</th>
+                <th>Update</th>
                 }
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let user of users">
-                <td>{{user.id}}</td>
-                <td>{{user.name}}</td>
-                <td>{{user.lastname}}</td>
-                <td>{{user.email}}</td>
-                <td>{{user.username}}</td>
+                <td>{{ user.id }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.lastname }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.username }}</td>
                 @if (admin){
-                    <td>
-                        <button type="button" class="btn btn-danger" (click)="onRemoveUser(user.id)">Delete</button>
-                    </td>
-                    <td>
-                        <button type="button" class="btn btn-primary"
-                        [routerLink]="['/users/edit', user.id]">Update</button>
-                    </td>
+                <td>
+                    <button type="button" class="btn btn-danger" (click)="onRemoveUser(user.id)">
+                        Delete
+                    </button>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-primary" [routerLink]="['/users/edit', user.id]">
+                        Update
+                    </button>
+                </td>
                 }
             </tr>
         </tbody>

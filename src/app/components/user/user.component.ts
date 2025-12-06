@@ -6,7 +6,8 @@ import { SharingDataService } from '../../services/sharing-data.service';
 import { UserService } from '../../services/user.service';
 import { PaginatorComponent } from '../paginator/paginator.component';
 import { AuthService } from '../../services/auth.service';
-
+import { Store } from '@ngrx/store';
+import { load } from '../store/users.actions';
 
 @Component({
   selector: 'user',
@@ -17,35 +18,25 @@ import { AuthService } from '../../services/auth.service';
 export class UserComponent implements OnInit {
   title: string = 'Listado de Usuarios';
 
-
   users: User[] = [];
   paginator: any = {};
   constructor(
+    private store: Store<{ users: any }>,
     private readonly userService: UserService,
     private readonly router: Router,
     private readonly sharingDataService: SharingDataService,
     private route: ActivatedRoute,
     private readonly authService: AuthService
   ) {
-    if (this.router.getCurrentNavigation()?.extras.state) {
-      this.users = this.router.getCurrentNavigation()?.extras.state!['users'];
-      this.paginator = this.router.getCurrentNavigation()?.extras.state!['paginator'];
-    }
+    this.store.select('users').subscribe((state) => {
+      this.users = state.users;
+      this.paginator = state.paginator;
+    });
   }
   ngOnInit(): void {
-    if (this.users?.length === 0) {
-      console.log('Consulta de usuarios findAll');
-      //this.userService.findAll().subscribe(users => this.users = users);
-      this.route.paramMap.subscribe(params => {
-        const page = +(params.get('page') || '0');
-        this.userService.findAllPageable(page).subscribe(pageable => {
-          this.users = pageable.content as User[]
-          this.paginator = pageable;
-          this.sharingDataService.pageUsersEventEmitter.emit({ users: this.users, paginator: this.paginator });
-
-        });
-      });
-    }
+    this.route.paramMap.subscribe((params) =>
+      this.store.dispatch(load({ page: +(params.get('page') || '0') }))
+    );
   }
 
   onRemoveUser(id: number): void {

@@ -19,8 +19,6 @@ export class NavbarComponent {
   ) {
 
   }
-  @Input() users: User[] = [];
-  @Input() paginator: any = {};
 
   get login() {
     return this.authService.user;

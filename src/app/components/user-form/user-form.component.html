@@ -1,21 +1,30 @@
 <div class="card">
-
   <div class="card-content">
     <div class="card-header">
-      <h5 class="card-title">Formulario {{ user.id > 0 ?
-        "Actualizar" : "Crear" }}</h5>
+      <h5 class="card-title">
+        Formulario {{ user.id > 0 ? "Actualizar" : "Crear" }}
+      </h5>
     </div>
     <div class="card-body">
-
-
-      <form (ngSubmit)="onSubmit(userForm)" #userForm="ngForm" class="form-group" autocomplete="off">
+      <form
+        (ngSubmit)="onSubmit(userForm)"
+        #userForm="ngForm"
+        class="form-group"
+        autocomplete="off"
+      >
         <!-- Formulario de creación de usuario -->
 
         <h2>Crear Usuario</h2>
 
         <!-- Campos del formulario -->
-        <input class="form-control my-2" placeholder="Ingrese Nombre" name="name" [(ngModel)]="user.name"
-          #name="ngModel" autofocus />
+        <input
+          class="form-control my-2"
+          placeholder="Ingrese Nombre"
+          name="name"
+          [(ngModel)]="user.name"
+          #name="ngModel"
+          autofocus
+        />
 
         @if (errors?.name) {
         <div class="alert alert-danger">
@@ -23,35 +32,58 @@
         </div>
         }
 
-        <input class="form-control my-2" placeholder="Enter LastName" name="lastName" [(ngModel)]="user.lastname"
-          #lastName="ngModel" pattern="[a-zA-ZÀ-ÿ\s]{8,20}" />
+        <input
+          class="form-control my-2"
+          placeholder="Enter LastName"
+          name="lastName"
+          [(ngModel)]="user.lastname"
+          #lastName="ngModel"
+          pattern="[a-zA-ZÀ-ÿ\s]{8,20}"
+        />
         @if (errors?.lastname) {
         <div class="alert alert-danger">
           {{ errors.lastname }}
         </div>
         }
 
-        <input class="form-control my-2" placeholder="Enter Email" name="email" [(ngModel)]="user.email" type="email"
-          title="Debe ser un correo electrónico válido" #email="ngModel" />
+        <input
+          class="form-control my-2"
+          placeholder="Enter Email"
+          name="email"
+          [(ngModel)]="user.email"
+          type="email"
+          title="Debe ser un correo electrónico válido"
+          #email="ngModel"
+        />
         @if (errors?.email) {
         <div class="alert alert-danger">
           {{ errors.email }}
         </div>
         }
-        <input class="form-control my-2" placeholder="Nombre de usuario" name="username" [(ngModel)]="user.username"
-          required #username="ngModel" pattern="^(?!.* {2})[a-zA-Z0-9]+(?: [a-zA-Z0-9]+){1,50}$">
+        <input
+          class="form-control my-2"
+          placeholder="Nombre de usuario"
+          name="username"
+          [(ngModel)]="user.username"
+          required
+          #username="ngModel"
+          pattern="^(?!.* {2})[a-zA-Z0-9]+(?: [a-zA-Z0-9]+){1,50}$"
+        />
         @if (errors?.username) {
         <div class="alert alert-danger">
           {{ errors.username }}
         </div>
-        }
-
-        @if (user.id==0) {
-
-          <input type="password" class="form-control" placeholder="Enter Password" name="password"
-          [(ngModel)]="user.password"
-          pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[.,@$!%*#?&-_])[a-zA-Z\d.,@$!%*#?&-_]{8,}$"
-          #password="ngModel" />
+        } 
+        @if (user.id==0 || user.id==null) {
+          <input
+            type="password"
+            class="form-control"
+            placeholder="Enter Password"
+            name="password"
+            [(ngModel)]="user.password"
+            pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[.,@$!%*#?&-_])[a-zA-Z\d.,@$!%*#?&-_]{8,}$"
+            #password="ngModel"
+          />
           @if (errors?.password) {
             <div class="alert alert-danger">
               {{ errors.password }}
@@ -65,10 +97,16 @@
         }
 
         <div>
-          <button type="submit" class="btn btn-primary my-2"> {{ user.id > 0 ?
-            "Actualizar" : "Crear" }}
+          <button type="submit" class="btn btn-primary my-2">
+            {{ user.id > 0 ? "Actualizar" : "Crear" }}
           </button>
-          <button type="button" class="btn btn-secondary my-2" (click)="userForm.reset()">Reset</button>
+          <button
+            type="button"
+            class="btn btn-secondary my-2"
+            (click)="onClear(userForm)"
+          >
+            Reset
+          </button>
         </div>
       </form>
     </div>
