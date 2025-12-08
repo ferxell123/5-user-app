@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { UserService } from '../../services/user.service';
+
 import {
   add,
   addSuccess,
@@ -13,9 +13,11 @@ import {
   updateSuccess,
 } from './users.actions';
 import { catchError, EMPTY, exhaustMap, map, of, tap } from 'rxjs';
-import { User } from '../../models/user';
+
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { UserService } from '../../../services/user.service';
+import { User } from '../../../models/user';
 
 @Injectable()
 export class UserEffects {
@@ -35,7 +37,7 @@ export class UserEffects {
             const paginator = pageable;
             return findAllPageable({ users, paginator });
           }),
-          catchError(() => EMPTY)
+          catchError((error) => of(error))
         )
       )
     )
@@ -48,13 +50,15 @@ export class UserEffects {
         this.service.create(action.userNew).pipe(
           map((userNew) => addSuccess({ userNew })),
           catchError((error) =>
-            error.status == 400 ? of(setErrors({ errors: error.error })) : EMPTY
+            error.status == 400
+              ? of(setErrors({ userForm: action.userNew, errors: error.error }))
+              : of(error)
           )
         )
       )
     )
   );
-  
+
   updateUser$ = createEffect(() =>
     this.actions$.pipe(
       ofType(update),
@@ -62,7 +66,14 @@ export class UserEffects {
         this.service.update(action.updatedUser).pipe(
           map((updatedUser) => updateSuccess({ updatedUser })),
           catchError((error) =>
-            error.status == 400 ? of(setErrors({ errors: error.error })) : EMPTY
+            error.status == 400
+              ? of(
+                  setErrors({
+                    userForm: action.updatedUser,
+                    errors: error.error,
+                  })
+                )
+              : of(error)
           )
         )
       )
@@ -73,12 +84,7 @@ export class UserEffects {
     this.actions$.pipe(
       ofType(remove),
       exhaustMap((action) =>
-        this.service.remove(action.id).pipe(
-          map((id) => removeSuccess({ id })),
-          catchError((error) =>
-            error.status == 400 ? of(setErrors({ errors: error.error })) : EMPTY
-          )
-        )
+        this.service.remove(action.id).pipe(map(() => removeSuccess({ id: action.id })))
       )
     )
   );
@@ -114,7 +120,7 @@ export class UserEffects {
       ),
     { dispatch: false }
   );
-  
+
   removeSuccessUser$ = createEffect(
     () =>
       this.actions$.pipe(
@@ -122,10 +128,10 @@ export class UserEffects {
         tap(() => {
           this.router.navigate(['/users']);
           Swal.fire({
-              title: "Eliminado!",
-              text: "Usuario eliminado correctamente!",
-              icon: "success"
-            });
+            title: 'Eliminado!',
+            text: 'Usuario eliminado correctamente!',
+            icon: 'success',
+          });
         })
       ),
     { dispatch: false }

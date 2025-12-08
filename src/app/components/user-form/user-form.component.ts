@@ -8,9 +8,8 @@ import {
   add,
   find,
   resetUser,
-  setUserForm,
   update,
-} from '../store/users.actions';
+} from '../store/users/users.actions';
 
 @Component({
   selector: 'user-form',
@@ -47,7 +46,6 @@ export class UserFormComponent implements OnInit {
   }
 
   onSubmit(userForm: NgForm): void {
-    this.store.dispatch(setUserForm({ user: this.user }));
     if (this.user.id && this.user.id > 0) {
       this.store.dispatch(update({ updatedUser: this.user }));
     } else {
