@@ -53,7 +53,6 @@ export class UserFormComponent implements OnInit {
     } else {
       this.store.dispatch(add({ userNew: this.user }));
     }
-    this.store.dispatch(resetUser());
   }
 
   onClear(userForm: NgForm): void {

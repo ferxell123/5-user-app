@@ -24,4 +24,5 @@ export const addSuccess = createAction(
 export const update = createAction('update', props<{ updatedUser: User }>());
 export const updateSuccess = createAction('updateSuccess', props<{ updatedUser: User }>());
 export const remove = createAction('remove', props<{ id: number }>());
+export const removeSuccess = createAction('removeSuccess', props<{ id: number }>());
 export const setErrors = createAction('setErrors', props<{ errors: any }>());

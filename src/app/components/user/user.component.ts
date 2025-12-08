@@ -7,7 +7,8 @@ import { UserService } from '../../services/user.service';
 import { PaginatorComponent } from '../paginator/paginator.component';
 import { AuthService } from '../../services/auth.service';
 import { Store } from '@ngrx/store';
-import { load } from '../store/users.actions';
+import { load, remove } from '../store/users.actions';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'user',
@@ -40,7 +41,19 @@ export class UserComponent implements OnInit {
   }
 
   onRemoveUser(id: number): void {
-    this.sharingDataService.idUserEventEmitter.emit(id);
+      Swal.fire({
+        title: "Estas seguro?",
+        text: "No podrás revertir esto!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Sí, eliminarlo!"
+      }).then((result) => {
+        if (result.isConfirmed) {
+            this.store.dispatch(remove({id}));
+        }
+      });
   }
 
   onSelectedUser(user: User): void {

@@ -73,27 +73,26 @@
         <div class="alert alert-danger">
           {{ errors.username }}
         </div>
-        } 
-        @if (user.id==0 || user.id==null) {
-          <input
-            type="password"
-            class="form-control"
-            placeholder="Enter Password"
-            name="password"
-            [(ngModel)]="user.password"
-            pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[.,@$!%*#?&-_])[a-zA-Z\d.,@$!%*#?&-_]{8,}$"
-            #password="ngModel"
-          />
-          @if (errors?.password) {
-            <div class="alert alert-danger">
-              {{ errors.password }}
-            </div>
-          }
-          <div *ngIf="password.invalid && (password.dirty || password.touched)">
-            <div class="alert alert-danger" *ngIf="password.errors!['pattern']">
-              {{ SPECIAL_CHAR_MESSAGE }}
-            </div>
+        } @if (user.id==0 || user.id==null) {
+        <input
+          type="password"
+          class="form-control"
+          placeholder="Enter Password"
+          name="password"
+          [(ngModel)]="user.password"
+          pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[.,@$!%*#?&-_])[a-zA-Z\d.,@$!%*#?&-_]{8,}$"
+          #password="ngModel"
+        />
+        @if (errors?.password) {
+        <div class="alert alert-danger">
+          {{ errors.password }}
+        </div>
+        }
+        <div *ngIf="password.invalid && (password.dirty || password.touched)">
+          <div class="alert alert-danger" *ngIf="password.errors!['pattern']">
+            {{ SPECIAL_CHAR_MESSAGE }}
           </div>
+        </div>
         }
 
         <div>

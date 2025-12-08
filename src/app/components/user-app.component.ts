@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../services/user.service';
 import Swal from 'sweetalert2';
 import { Router, RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './navbar/navbar.component';
 import { SharingDataService } from '../services/sharing-data.service';
 import { AuthService } from '../services/auth.service';
-import { Store } from '@ngrx/store';
-import { remove} from './store/users.actions';
+
 
 @Component({
   selector: 'user-app',
@@ -18,8 +16,6 @@ import { remove} from './store/users.actions';
 export class UserAppComponent implements OnInit {
 
   constructor(
-    private store: Store<{ users: any }>,
-    private readonly service: UserService,
     private readonly sharingDataService: SharingDataService,
     private readonly router: Router,
     private readonly authService: AuthService,
@@ -28,7 +24,6 @@ export class UserAppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.removeUser();
     this.handlerLogin();
   }
 
@@ -64,33 +59,5 @@ export class UserAppComponent implements OnInit {
     })
   }
 
-  removeUser(): void {
-    this.sharingDataService.idUserEventEmitter.subscribe((id: number) => {
-      Swal.fire({
-        title: "Estas seguro?",
-        text: "No podrás revertir esto!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Sí, eliminarlo!"
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.service.delete(id).subscribe(() => {
-            //this.users = this.users.filter((user) => user.id !== id);
-            this.store.dispatch(remove({id}));
-            this.router.navigate(['/users/create'], { skipLocationChange: true }).then(() => {
-              this.router.navigate(['/users']);
-            });
-            Swal.fire({
-              title: "Eliminado!",
-              text: "Usuario eliminado correctamente!",
-              icon: "success"
-            });
-          });
-        }
-      });
-    });
-  }
-
+  
 }

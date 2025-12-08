@@ -5,16 +5,14 @@ import {
   find,
   findAll,
   findAllPageable,
-  load,
-  remove,
+  removeSuccess,
   resetUser,
   setErrors,
   setPaginator,
   setUserForm,
-  update,
   updateSuccess,
 } from './users.actions';
-import { state } from '@angular/animations';
+
 
 const users: User[] = [];
 const user: User = new User();
@@ -30,9 +28,9 @@ export const usersReducer = createReducer(
     users: state.users,
     paginator: state.paginator,
     user: { ...user },
-    errors: state.errors,
+    errors:{},
   })),
-  
+
   on(setUserForm, (state, {user}) => ({
     users: state.users,
     paginator: state.paginator,
@@ -81,7 +79,7 @@ export const usersReducer = createReducer(
     errors: state.errors,
   })),
 
-  on(remove, (state, { id }) => ({
+  on(removeSuccess, (state, { id }) => ({
     users: state.users.filter((user) => user.id !== id),
     paginator: state.paginator,
     user: state.user,

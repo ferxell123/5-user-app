@@ -6,6 +6,8 @@ import {
   addSuccess,
   findAllPageable,
   load,
+  remove,
+  removeSuccess,
   setErrors,
   update,
   updateSuccess,
@@ -57,8 +59,22 @@ export class UserEffects {
     this.actions$.pipe(
       ofType(update),
       exhaustMap((action) =>
-        this.service.create(action.updatedUser).pipe(
+        this.service.update(action.updatedUser).pipe(
           map((updatedUser) => updateSuccess({ updatedUser })),
+          catchError((error) =>
+            error.status == 400 ? of(setErrors({ errors: error.error })) : EMPTY
+          )
+        )
+      )
+    )
+  );
+
+  removeUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(remove),
+      exhaustMap((action) =>
+        this.service.remove(action.id).pipe(
+          map((id) => removeSuccess({ id })),
           catchError((error) =>
             error.status == 400 ? of(setErrors({ errors: error.error })) : EMPTY
           )
@@ -94,6 +110,22 @@ export class UserEffects {
             text: 'Usuario actualizado correctamente!',
             icon: 'success',
           });
+        })
+      ),
+    { dispatch: false }
+  );
+  
+  removeSuccessUser$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(removeSuccess),
+        tap(() => {
+          this.router.navigate(['/users']);
+          Swal.fire({
+              title: "Eliminado!",
+              text: "Usuario eliminado correctamente!",
+              icon: "success"
+            });
         })
       ),
     { dispatch: false }
