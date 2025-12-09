@@ -4,60 +4,16 @@ import { Router, RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './navbar/navbar.component';
 import { SharingDataService } from '../services/sharing-data.service';
 import { AuthService } from '../services/auth.service';
-
+import { Store } from '@ngrx/store';
+import { login } from './store/auth/auth.actions';
 
 @Component({
   selector: 'user-app',
   standalone: true,
   imports: [RouterOutlet, NavbarComponent],
   templateUrl: './user-app.component.html',
-  styleUrls: ['./user-app.component.css']
+  styleUrls: ['./user-app.component.css'],
 })
-export class UserAppComponent implements OnInit {
-
-  constructor(
-    private readonly sharingDataService: SharingDataService,
-    private readonly router: Router,
-    private readonly authService: AuthService,
-  ) {
-    
-  }
-
-  ngOnInit(): void {
-    this.handlerLogin();
-  }
-
-  handlerLogin() {
-    this.sharingDataService.handlerLoginEventEmitter.subscribe(({ username, password }) => {
-      console.log(username + ' ' + password);
-      this.authService.loginUser({ username, password }).subscribe({
-        next: response => {
-          console.log(response + ': ' + response);
-          const token = response.token;
-          const payload = this.authService.getPayload(token);
-
-          const user = { username: payload.sub };
-          const login = {
-            user,
-            isAuth: true,
-            isAdmin: payload.isAdmin
-          }
-          this.authService.token = token;
-          this.authService.user = login;
-          this.router.navigate(['/users/page/0'])
-
-        },
-        error: error => {
-          if (error.status == "401") {
-            Swal.fire('Error en el loging', error.error.message, 'error');
-          } else {
-            throw error;
-          }
-
-        }
-      })
-    })
-  }
-
+export class UserAppComponent {
   
 }
